@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Snake
 {
@@ -41,6 +42,15 @@ namespace Snake
             Tail.Add(Head);
             Head = new Point(Tail[Tail.Count-1].X + Convert.ToInt32(Math.Round(x)),
                           Tail[Tail.Count - 1].Y + Convert.ToInt32(Math.Round(y)));
+        }
+        public PictureBox GetHead(Color color, int size)
+        {
+            var pBox = new PictureBox();
+            pBox.Width =             10;
+            pBox.Height =            10;
+            pBox.Location =        Head;
+            pBox.BackColor = Color.Blue;
+            return pBox;
         }
     }
 }

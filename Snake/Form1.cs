@@ -23,16 +23,13 @@ namespace Snake
         {
             InitializeComponent();
             timer = new Timer();
+            Snake snake1;
             timer.Interval = 60;
             timer.Tick += Timer_Tick;
-            speed = 4;
-            direction = Math.PI/4;
+            snake1 = new Snake();
+            snake1.Speed = 6;
             player1tail = new List<PictureBox>();
-            player1 = new PictureBox();
-            player1.Width = 10;
-            player1.Height = 10;
-            player1.Location = new Point(0, 0);
-            player1.BackColor = Color.Blue;
+            player1 = snake1.GetHead(Color.Blue, 10);
             this.Controls.Add(player1);
             timer.Start();
         }
