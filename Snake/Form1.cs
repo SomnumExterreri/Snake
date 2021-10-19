@@ -25,7 +25,7 @@ namespace Snake
             timer = new Timer();
             timer.Interval = 60;
             timer.Tick += Timer_Tick;
-            speed = 2;
+            speed = 4;
             direction = Math.PI/4;
             player1tail = new List<PictureBox>();
             player1 = new PictureBox();

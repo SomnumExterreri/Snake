@@ -34,5 +34,13 @@ namespace Snake
         {
             Direction -= TurnSpeed;
         }
+        public void Foward()
+        {
+            var x = Math.Sin(Direction) * Speed;
+            var y = Math.Cos(Direction) * Speed;
+            Tail.Add(Head);
+            Head = new Point(Tail[Tail.Count-1].X + Convert.ToInt32(Math.Round(x)),
+                          Tail[Tail.Count - 1].Y + Convert.ToInt32(Math.Round(y)));
+        }
     }
 }
