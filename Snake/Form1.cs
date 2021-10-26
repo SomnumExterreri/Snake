@@ -12,50 +12,138 @@ namespace Snake
 {
     public partial class Form1 : Form
     {
-        bool s, d;
+        bool a, d, left, right;
+        Timer timer;
+        Snake snake1;
+        Snake snake2;
         PictureBox player1;
         List<PictureBox> player1tail;
         PictureBox player2;
-        Timer timer;
-        int speed;
-        double direction;
+        List<PictureBox> player2tail;
+        Point startPoint1;
+        Point startPoint2;
+        Point centerForm;
+        bool gameStarted;
+
         public Form1()
         {
             InitializeComponent();
+            CenterMenu();
             timer = new Timer();
-            Snake snake1;
-            timer.Interval = 60;
+            timer.Interval = 50;
             timer.Tick += Timer_Tick;
-            snake1 = new Snake();
-            snake1.Speed = 6;
+            snake1 = new Snake(startPoint1);
+            snake1.Speed = 5;
             player1tail = new List<PictureBox>();
             player1 = snake1.GetHead(Color.Blue, 10);
+            snake2 = new Snake(startPoint2);
+            snake2.Speed = 5;
+            player2tail = new List<PictureBox>();
+            player2 = snake1.GetHead(Color.Red, 10);
             this.Controls.Add(player1);
-            timer.Start();
+            this.Controls.Add(player2);
+        }
+
+        private void CenterMenu()
+        {
+            panel1.Top = 0;
+            panel1.Left = centerForm.X / 2 - panel1.Width / 2;
+            startPoint1 = new Point(centerForm.X - 15, centerForm.Y-5);
+            startPoint2 = new Point(centerForm.X + 5, centerForm.Y - 5);
+            if (!gameStarted)
+            {
+                player1.Location = startPoint1;
+                snake1.Head = startPoint1;
+                player2.Location = startPoint2;
+                snake2.Head = startPoint2;
+            }
+
+        }
+
+        private void Form1_ClientSizeChanged(object sender, EventArgs e)
+        {
+            CenterMenu();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = !timer.Enabled;
+            if (timer.Enabled)
+            {
+                button1.BackgroundImage = Properties.Resources.png_transparent_pause_logo_computer_icons_button_media_player_pause_butto;
+            }
+            else
+            {
+                button1.BackgroundImage = Properties.Resources._1555442127;
+            }
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            var x = Math.Sin(direction) * speed;
-            var y = Math.Cos(direction) * speed;
+            if (a)
+            {
+                snake1.TurnLeft();
+            }
+            if (d)
+            {
+                snake1.TurnRight();
+            }
+            if (left)
+            {
+                snake2.TurnLeft();
+            }
+            if (right)
+            {
+                snake2.TurnRight();
+            }
+
             player1tail.Add(player1);
-            player1 = new PictureBox();
-            player1.Width = 10;
-            player1.Height = 10;
-            player1.BackColor = Color.Blue;
-            player1.Location = new Point(player1tail.Last().Location.X + Convert.ToInt32(Math.Round(x)), player1tail.Last().Location.Y + Convert.ToInt32(Math.Round(y)));
+            snake1.Forward();
+            player1 = snake1.GetHead(Color.Blue, 10);
             this.Controls.Add(player1);
+            player2tail.Add(player2);
+            snake2.Forward();
+            player2 = snake2.GetHead(Color.Red, 10);
+            this.Controls.Add(player2);
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.A)
+            {
+                a = false;
+            }
+            else if (e.KeyCode == Keys.D)
+            {
+                d = false;
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                left = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                right = false;
+            }
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.S)
+            if (e.KeyCode == Keys.A)
             {
-                direction += 0.5;
+                a = true;
             }
-            else if (e.KeyCode == Keys.F)
+            else if (e.KeyCode == Keys.D)
             {
-                direction -= 0.5;
+                d = true;
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                left = true;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                right = true;
             }
         }
     }
